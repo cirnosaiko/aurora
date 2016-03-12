@@ -1,21 +1,27 @@
 Fonts
 -----------------------------------------------------------------------------
-File:    Fonts/coders_crux.ttf
+File:    coders_crux.ttf
 Name:    Coder's Crux
 Author:  Vincenzo Vuono
 Link:    http://www.dafont.com/de/coders-crux.font
 License: http://creativecommons.org/licenses/by/3.0/
 
-File:    Music/Gravity-Regular.otf
+File:    Gravity-Regular.otf
 Name:    Gravity
-Author:  “NAL”
+Author:  NAL
 Link:    http://www.dafont.com/de/gravity.font
 License: http://creativecommons.org/licenses/by/4.0/
 
 Music
 -----------------------------------------------------------------------------
-File:    Music/Login.ogg
+File:    Login.ogg
 Name:    Path to Lake Land
 Author:  Alexandr Zhelanov
 Link:    http://opengameart.org/content/path-to-lake-land
+License: http://creativecommons.org/licenses/by/3.0/
+
+File:    Uladh_main.mp3
+Name:    Town Theme RPG
+Author:  cynicmusic
+Link:    http://opengameart.org/content/town-theme-rpg
 License: http://creativecommons.org/licenses/by/3.0/
