@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class InputMovement : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class InputMovement : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetMouseButtonUp(0))
+		if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
