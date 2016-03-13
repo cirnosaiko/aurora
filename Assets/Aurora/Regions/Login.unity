@@ -93,9 +93,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 130032270}
-  - 114: {fileID: 130032273}
-  - 114: {fileID: 130032272}
   - 114: {fileID: 130032271}
+  - 114: {fileID: 130032273}
   m_Layer: 0
   m_Name: InGameControl
   m_TagString: Untagged
@@ -126,20 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c34920fb8a960342958b0ccdf05cc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &130032272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 130032269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 369289b9e9c9c9246a1d5bc879e4aac3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RunningSpeed: 373.8506
-  WalkingSpeed: 207.6892
-  RotationDelay: 0.01
 --- !u!114 &130032273
 MonoBehaviour:
   m_ObjectHideFlags: 0
