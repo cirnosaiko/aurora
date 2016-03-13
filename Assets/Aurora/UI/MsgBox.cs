@@ -29,23 +29,36 @@ public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
 		var transform = obj.transform as RectTransform;
 		var txtMessage = transform.FindChild("TxtMessage").GetComponent<Text>();
 		var buttonsTransform = transform.FindChild("Buttons").transform;
+		var hasButtons = (buttons != MsgBoxButtons.None);
 
-		foreach (var msgBoxButton in new[] { MsgBoxButtons.Okay, MsgBoxButtons.Yes, MsgBoxButtons.No })
+		if (!hasButtons)
 		{
-			var buttonTransform = buttonsTransform.FindChild("Btn" + msgBoxButton);
-			if (buttonTransform == null)
+			foreach (Transform child in buttonsTransform)
+				child.gameObject.SetActive(false);
+		}
+		else
+		{
+			foreach (var msgBoxButton in new[] { MsgBoxButtons.Okay, MsgBoxButtons.Yes, MsgBoxButtons.No })
 			{
-				Debug.LogErrorFormat("MsgBox: Button '{0}' not found.", msgBoxButton);
-				continue;
-			}
+				var buttonTransform = buttonsTransform.FindChild("Btn" + msgBoxButton);
+				if (buttonTransform == null)
+				{
+					Debug.LogErrorFormat("MsgBox: Button '{0}' not found.", msgBoxButton);
+					continue;
+				}
 
-			var button = buttonTransform.GetComponent<Button>();
-			if ((buttons & msgBoxButton) == 0)
-				button.gameObject.SetActive(false);
+				var button = buttonTransform.GetComponent<Button>();
+				if ((buttons & msgBoxButton) == 0)
+					button.gameObject.SetActive(false);
+			}
 		}
 
 		txtMessage.text = text;
 
+		var width = Math.Max(200, txtMessage.preferredWidth + 20);
+		var height = Math.Max(102, txtMessage.preferredHeight + 20 + 30 + (hasButtons ? 35 : 0));
+
+		transform.sizeDelta = new Vector2(width, height);
 		transform.position = new Vector3(Screen.width / 2, Screen.height / 2);
 		transform.SetParent(canvas.transform);
 
