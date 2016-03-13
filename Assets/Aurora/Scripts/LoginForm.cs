@@ -8,6 +8,7 @@ using System;
 
 public class LoginForm : MonoBehaviour
 {
+	public GameObject FrmLogin;
 	public InputField TxtUsername;
 	public InputField TxtPassword;
 
@@ -21,6 +22,7 @@ public class LoginForm : MonoBehaviour
 		{
 			connecting = false;
 			processInfo.Close();
+			FrmLogin.SetActive(true);
 			MsgBox.Show("Connection failed.");
 		}
 	}
@@ -34,5 +36,7 @@ public class LoginForm : MonoBehaviour
 		connecting = true;
 		connectionTimeout = Time.time + 2;
 		processInfo = MsgBox.Show("Connecting...", MsgBoxButtons.None);
+
+		FrmLogin.SetActive(false);
 	}
 }
