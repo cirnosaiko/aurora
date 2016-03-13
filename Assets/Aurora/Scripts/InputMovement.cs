@@ -7,21 +7,30 @@ using UnityEngine.EventSystems;
 
 public class InputMovement : MonoBehaviour
 {
-	void Start()
-	{
+	private GameObject target;
 
+	void OnLevelWasLoaded(int level)
+	{
+		SetTarget(GameObject.FindGameObjectWithTag("Player"));
+	}
+
+	public void SetTarget(GameObject target)
+	{
+		this.target = target;
 	}
 
 	void Update()
 	{
+		if (target == null)
+			return;
+
 		if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit))
 			{
-				var player = GameObject.FindGameObjectWithTag("Player");
-				var controller = player.GetComponent<CreatureController>();
+				var controller = target.GetComponent<CreatureController>();
 				controller.Move(hit.point, false);
 			}
 		}
