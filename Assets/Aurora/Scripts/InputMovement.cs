@@ -21,7 +21,7 @@ public class InputMovement : MonoBehaviour
 			if (Physics.Raycast(ray, out hit))
 			{
 				var player = GameObject.FindGameObjectWithTag("Player");
-				var controller = player.GetComponent<CharacterController>();
+				var controller = player.GetComponent<CreatureController>();
 				controller.Move(hit.point, false);
 			}
 		}

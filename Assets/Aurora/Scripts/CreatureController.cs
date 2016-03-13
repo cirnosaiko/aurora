@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class CharacterController : MonoBehaviour
+public class CreatureController : MonoBehaviour
 {
 	public float RunningSpeed = 373.850600f;
 	public float WalkingSpeed = 207.689200f;
