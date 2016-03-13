@@ -2,9 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
+	public MsgBoxResult Result;
+
 	private Vector2 dragStart;
 
 	public static MsgBox Show(string text)
@@ -25,27 +28,39 @@ public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
 
 		var transform = obj.transform as RectTransform;
 		var txtMessage = transform.FindChild("TxtMessage").GetComponent<Text>();
-		var btnOkay = transform.FindChild("BtnOkay").GetComponent<Button>();
+		var buttonsTransform = transform.FindChild("Buttons").transform;
 
-		if ((buttons & MsgBoxButtons.Okay) == 0)
-			btnOkay.gameObject.SetActive(false);
+		foreach (var msgBoxButton in new[] { MsgBoxButtons.Okay, MsgBoxButtons.Yes, MsgBoxButtons.No })
+		{
+			var buttonTransform = buttonsTransform.FindChild("Btn" + msgBoxButton);
+			if (buttonTransform == null)
+			{
+				Debug.LogErrorFormat("MsgBox: Button '{0}' not found.", msgBoxButton);
+				continue;
+			}
 
-		transform.SetParent(canvas.transform);
-		transform.position = new Vector3(Screen.width / 2, Screen.height / 2);
+			var button = buttonTransform.GetComponent<Button>();
+			if ((buttons & msgBoxButton) == 0)
+				button.gameObject.SetActive(false);
+		}
 
 		txtMessage.text = text;
+
+		transform.position = new Vector3(Screen.width / 2, Screen.height / 2);
+		transform.SetParent(canvas.transform);
 
 		return obj.GetComponent<MsgBox>();
 	}
 
 	public void Close()
 	{
-		Destroy(gameObject);
+		Close((int)MsgBoxResult.None);
 	}
 
-	public void BtnOkay_OnClick()
+	public void Close(int result)
 	{
-		Close();
+		Result = (MsgBoxResult)result;
+		Destroy(gameObject);
 	}
 
 	public void OnBeginDrag(PointerEventData eventData)
@@ -61,6 +76,19 @@ public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
 
 public enum MsgBoxButtons
 {
-	None = 0,
-	Okay = 1,
+	None = 0x00,
+	Okay = 0x01,
+	Yes = 0x02,
+	No = 0x04,
+
+	YesNo = Yes | No,
+}
+
+public enum MsgBoxResult
+{
+	Pending = 0,
+	None = 1,
+	Okay = 2,
+	Yes = 3,
+	No = 4,
 }
