@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
 	private float rotationY = 30;
 	private float distance = 7;
 
-	void Start()
+	void OnLevelWasLoaded(int level)
 	{
 		cameraTransform = Camera.main.transform;
 		SetTarget(GameObject.FindGameObjectWithTag("Player"));
