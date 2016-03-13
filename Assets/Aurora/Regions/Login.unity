@@ -1540,6 +1540,7 @@ MonoBehaviour:
   FrmLogin: {fileID: 2058791978}
   TxtUsername: {fileID: 1933103126}
   TxtPassword: {fileID: 1679246405}
+  ConnectionTimeout: 2
 --- !u!4 &2043003634
 Transform:
   m_ObjectHideFlags: 0

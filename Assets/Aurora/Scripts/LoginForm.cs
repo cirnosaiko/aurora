@@ -12,6 +12,9 @@ public class LoginForm : MonoBehaviour
 	public InputField TxtUsername;
 	public InputField TxtPassword;
 
+	[Range(1, 30)]
+	public int ConnectionTimeout = 2;
+
 	private bool connecting;
 	private float connectionTimeout;
 	private MsgBox processInfo;
@@ -34,7 +37,7 @@ public class LoginForm : MonoBehaviour
 		Debug.Log("Password: " + TxtPassword.text);
 
 		connecting = true;
-		connectionTimeout = Time.time + 2;
+		connectionTimeout = Time.time + ConnectionTimeout;
 		processInfo = MsgBox.Show("Connecting...", MsgBoxButtons.None);
 
 		FrmLogin.SetActive(false);
