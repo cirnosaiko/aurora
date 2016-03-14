@@ -21,9 +21,9 @@ public class CharacterSelectList : MonoBehaviour
 		{
 			var name = character.Name;
 			if (character.IsPartner)
-				name += "(Partner)";
+				name += " (Partner)";
 			else if (character.IsPet)
-				name += "(Pet)";
+				name += " (Pet)";
 
 			var buttonObj = GameObject.Instantiate(ButtonReference);
 			buttonObj.transform.SetParent(transform);
@@ -32,7 +32,6 @@ public class CharacterSelectList : MonoBehaviour
 			text.text = name;
 
 			var button = buttonObj.GetComponent<Button>();
-			button.onClick = new Button.ButtonClickedEvent();
 			button.onClick.AddListener(() => { OnCharacterSelected(character); });
 		}
 	}

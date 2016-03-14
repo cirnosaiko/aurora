@@ -264,6 +264,30 @@ public class LoginForm : MonoBehaviour
 			characters.Add(character);
 		}
 
+		var pets = new List<CharacterInfo>();
+		var petCount = packet.GetShort();
+		for (int i = 0; i < petCount; ++i)
+		{
+			var serverName = packet.GetString();
+			var entityId = packet.GetLong();
+			var characterName = packet.GetString();
+			var deletionFlag = (DeletionFlag)packet.GetByte();
+			var unkLong2 = packet.GetLong();
+			var race = packet.GetInt();
+			var unkLong3 = packet.GetLong();
+			var unkLong4 = packet.GetLong();
+			var unkInt6 = packet.GetInt();
+			var unkByte12 = packet.GetByte();
+
+			var character = new CharacterInfo();
+			character.Server = serverName;
+			character.EntityId = entityId;
+			character.Name = characterName;
+			character.DeletionFlag = deletionFlag;
+
+			characters.Add(character);
+		}
+
 		// Set
 		Connection.AccountName = accountName;
 		Connection.SessionKey = sessionKey;
@@ -271,6 +295,7 @@ public class LoginForm : MonoBehaviour
 		Connection.Servers.AddRange(servers);
 		Connection.Characters.Clear();
 		Connection.Characters.AddRange(characters);
+		Connection.Characters.AddRange(pets);
 
 		// Transition
 		SceneManager.LoadScene("CharacterSelect");
