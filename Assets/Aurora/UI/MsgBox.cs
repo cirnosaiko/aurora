@@ -4,11 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
+public class MsgBox : MonoBehaviour
 {
 	public MsgBoxResult Result;
-
-	private Vector2 dragStart;
 
 	public static MsgBox Show(string text)
 	{
@@ -74,16 +72,6 @@ public class MsgBox : MonoBehaviour, IBeginDragHandler, IDragHandler
 	{
 		Result = (MsgBoxResult)result;
 		Destroy(gameObject);
-	}
-
-	public void OnBeginDrag(PointerEventData eventData)
-	{
-		dragStart = transform.position;
-	}
-
-	public void OnDrag(PointerEventData eventData)
-	{
-		transform.position = dragStart + (eventData.position - eventData.pressPosition);
 	}
 }
 
