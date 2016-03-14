@@ -46,6 +46,12 @@ public class CharacterSelectList : MonoBehaviour
 			return;
 		}
 
+		if (character.IsPartner)
+		{
+			MsgBox.Show("You can't use a Partner to login.");
+			return;
+		}
+
 		Debug.LogFormat("{0} : {1:X16}", character.Name, character.EntityId);
 	}
 }
