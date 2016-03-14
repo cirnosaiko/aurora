@@ -52,6 +52,6 @@ public class CharacterSelectList : MonoBehaviour
 			return;
 		}
 
-		Debug.LogFormat("{0} : {1:X16}", character.Name, character.EntityId);
+		MsgBox.Show("TODO: Login with " + character.Name + ".");
 	}
 }
