@@ -32,9 +32,11 @@ public class LoginForm : MonoBehaviour
 
 	public void BtnLogin_OnClick()
 	{
-		Debug.Log("BtnLogin_OnClick");
-		Debug.Log("Username: " + TxtUsername.text);
-		Debug.Log("Password: " + TxtPassword.text);
+		var username = TxtUsername.text;
+		var password = TxtPassword.text;
+
+		if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+			return;
 
 		connecting = true;
 		connectionTimeout = Time.time + ConnectionTimeout;
