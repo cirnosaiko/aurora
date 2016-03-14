@@ -34,6 +34,11 @@ public class BgmManager : MonoBehaviour
 
 	void OnLevelWasLoaded(int level)
 	{
+		// If audioSource is null, this System is a duplicate that wasn't
+		// destroyed yet, ignore.
+		if (audioSource == null)
+			return;
+
 		var name = SceneManager.GetActiveScene().name;
 		if (TrackExists(name))
 			this.Play(name);
@@ -58,6 +63,9 @@ public class BgmManager : MonoBehaviour
 
 	public void Play(AudioClip clip)
 	{
+		if (audioSource.clip == clip)
+			return;
+
 		audioSource.clip = clip;
 		audioSource.Play();
 	}
