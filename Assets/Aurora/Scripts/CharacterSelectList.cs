@@ -19,6 +19,7 @@ public class CharacterSelectList : MonoBehaviour
 		characters = Connection.Characters.OrderBy(a => a.EntityId).ToArray();
 		foreach (var character in characters)
 		{
+			var entityId = character.EntityId;
 			var name = character.Name;
 			if (character.IsPartner)
 				name += " (Partner)";
@@ -32,12 +33,19 @@ public class CharacterSelectList : MonoBehaviour
 			text.text = name;
 
 			var button = buttonObj.GetComponent<Button>();
-			button.onClick.AddListener(() => { OnCharacterSelected(character); });
+			button.onClick.AddListener(() => { OnCharacterSelected(entityId); });
 		}
 	}
 
-	private void OnCharacterSelected(CharacterInfo character)
+	private void OnCharacterSelected(long entityId)
 	{
-		Debug.Log(character.Name + " : " + character.EntityId);
+		var character = characters.FirstOrDefault(a => a.EntityId == entityId);
+		if (character == null)
+		{
+			Debug.LogErrorFormat("Missing character '{0}'.", entityId);
+			return;
+		}
+
+		Debug.LogFormat("{0} : {1:X16}", character.Name, character.EntityId);
 	}
 }
