@@ -14,15 +14,37 @@ using System.Collections.Generic;
 
 public class LoginForm : MonoBehaviour
 {
-	public GameObject FrmLogin;
+	public GameObject Elements;
 	public InputField TxtUsername;
 	public InputField TxtPassword;
+	public Button BtnLogin;
+	public Button BtnEnd;
 
 	private MsgBox stateInfo;
+	private MsgBox endQuery;
 	private LoginState state;
+
+	void Start()
+	{
+		BtnLogin.onClick.AddListener(BtnLogin_OnClick);
+		BtnEnd.onClick.AddListener(BtnEnd_OnClick);
+	}
 
 	void Update()
 	{
+		// End Game msg box
+		if (endQuery != null && endQuery.Result != MsgBoxResult.Pending)
+		{
+			if (endQuery.Result == MsgBoxResult.Yes)
+			{
+				Application.Quit();
+				return;
+			}
+
+			endQuery.Close();
+			endQuery = null;
+		}
+
 		// Nothing to do if we're waiting for input
 		if (state == LoginState.Waiting)
 			return;
@@ -64,7 +86,7 @@ public class LoginForm : MonoBehaviour
 	private void ResetForm(string message)
 	{
 		state = LoginState.Waiting;
-		FrmLogin.SetActive(true);
+		Elements.SetActive(true);
 
 		if (stateInfo != null)
 			stateInfo.Close();
@@ -82,7 +104,15 @@ public class LoginForm : MonoBehaviour
 		stateInfo = MsgBox.Show("Connecting...", MsgBoxButtons.None);
 		Connection.Client.ConnectAsync("127.0.0.1", 11000);
 
-		FrmLogin.SetActive(false);
+		Elements.SetActive(false);
+	}
+
+	public void BtnEnd_OnClick()
+	{
+		if (endQuery != null)
+			return;
+
+		endQuery = MsgBox.Show("Do you want to end the game?", MsgBoxButtons.YesNo);
 	}
 
 	private enum LoginState
