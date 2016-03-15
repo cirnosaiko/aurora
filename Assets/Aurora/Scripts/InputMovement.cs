@@ -9,9 +9,15 @@ public class InputMovement : MonoBehaviour
 {
 	private GameObject target;
 
+	void Start()
+	{
+		var player = GameObject.FindGameObjectWithTag("Player");
+		SetTarget(player);
+	}
+
 	void OnLevelWasLoaded(int level)
 	{
-		SetTarget(GameObject.FindGameObjectWithTag("Player"));
+		Start();
 	}
 
 	public void SetTarget(GameObject target)
