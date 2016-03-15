@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Aura.Mabi.Const;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class LoginForm : MonoBehaviour
 {
@@ -35,6 +36,19 @@ public class LoginForm : MonoBehaviour
 
 	void Update()
 	{
+		// Submit
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			var system = EventSystem.current;
+			var selected = system.currentSelectedGameObject;
+
+			if (selected == TxtUsername.gameObject || selected == TxtPassword.gameObject)
+			{
+				BtnLogin.OnPointerClick(new PointerEventData(system));
+				return;
+			}
+		}
+
 		// End Game msg box
 		if (endQuery != null && endQuery.Result != MsgBoxResult.Pending)
 		{
@@ -120,6 +134,7 @@ public class LoginForm : MonoBehaviour
 	{
 		if (string.IsNullOrEmpty(TxtUsername.text) || string.IsNullOrEmpty(TxtPassword.text))
 			return;
+		}
 
 		State = LoginState.Connecting;
 		Connection.Client.ConnectAsync("127.0.0.1", 11000);
