@@ -132,7 +132,12 @@ public class LoginForm : MonoBehaviour
 
 	public void BtnLogin_OnClick()
 	{
-		if (string.IsNullOrEmpty(TxtUsername.text) || string.IsNullOrEmpty(TxtPassword.text))
+		var username = TxtUsername.text;
+		var password = TxtPassword.text;
+
+		if (username.Length < 4 || password.Length < 4)
+		{
+			MsgBox.Show("Your username and password must have at least 4 characters.");
 			return;
 		}
 
