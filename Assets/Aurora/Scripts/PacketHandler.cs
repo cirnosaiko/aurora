@@ -25,12 +25,12 @@ public class PacketHandler : MonoBehaviour
 		var packets = Connection.Client.GetPacketsFromQueue();
 		foreach (var packet in packets)
 		{
-			Debug.Log(Op.GetName(packet.Op));
-
 			switch (packet.Op)
 			{
 				case Op.ClientIdentR: HandleClientIdentR(packet); break;
 				case Op.LoginR: HandleLoginR(packet); break;
+
+				default: Debug.LogFormat("Unhandled packet: {0:X4} ({1})", packet.Op, Op.GetName(packet.Op)); break;
 			}
 		}
 	}
