@@ -1042,6 +1042,7 @@ GameObject:
   - 4: {fileID: 1396482403}
   - 114: {fileID: 1396482405}
   - 114: {fileID: 1396482402}
+  - 114: {fileID: 1396482404}
   m_Layer: 0
   m_Name: System
   m_TagString: Untagged
@@ -1074,6 +1075,17 @@ Transform:
   - {fileID: 130032270}
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!114 &1396482404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1396482401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4167fb9a3bcfc3439911b9fa9e3ba70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1396482405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,3 +1804,4 @@ MonoBehaviour:
   TxtPassword: {fileID: 1679246405}
   BtnLogin: {fileID: 524358631}
   BtnEnd: {fileID: 977774181}
+  State: 0
