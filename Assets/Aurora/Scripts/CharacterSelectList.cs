@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterSelectList : MonoBehaviour
 {
@@ -20,17 +21,16 @@ public class CharacterSelectList : MonoBehaviour
 		foreach (var character in characters)
 		{
 			var entityId = character.EntityId;
-			var name = character.Name;
-			if (character.IsPartner)
-				name += " (Partner)";
-			else if (character.IsPet)
-				name += " (Pet)";
+			var name = string.Format("{0} ({1})", character.Name, character.Server);
 
 			var buttonObj = GameObject.Instantiate(ButtonReference);
 			buttonObj.transform.SetParent(transform);
 
 			var text = buttonObj.GetComponentInChildren<Text>();
 			text.text = name;
+
+			var disable = buttonObj.transform.FindChild("Img" + (character.IsPet ? "Character" : "Pet"));
+			disable.gameObject.SetActive(false);
 
 			var button = buttonObj.GetComponent<Button>();
 			button.onClick.AddListener(() => { OnCharacterSelected(entityId); });
