@@ -161,42 +161,7 @@ public class PacketHandler : MonoBehaviour
 		var accountName2 = packet.GetString();
 		var sessionKey = packet.GetLong();
 		var unkByte1 = packet.GetByte();
-
-		var servers = new List<ServerInfo>();
-		var serverCount = packet.GetByte();
-		for (int i = 0; i < serverCount; ++i)
-		{
-			var serverName = packet.GetString();
-			var unkShort1 = packet.GetShort();
-			var unkShort2 = packet.GetShort();
-			var unkByte2 = packet.GetByte();
-
-			var channels = new List<ChannelInfo>();
-			var channelCount = packet.GetInt();
-			for (int j = 0; j < channelCount; ++j)
-			{
-				var channelName = packet.GetString();
-				var channelState = (ChannelState)packet.GetInt();
-				var channelEvent = (ChannelEvent)packet.GetInt();
-				var unkInt2 = packet.GetInt();
-				var stress = packet.GetShort();
-
-				var channel = new ChannelInfo();
-				channel.Name = channelName;
-				channel.State = channelState;
-				channel.Events = channelEvent;
-				channel.Stress = stress;
-
-				channels.Add(channel);
-			}
-
-			var server = new ServerInfo();
-			server.Name = serverName;
-			server.Channels.AddRange(channels);
-
-			servers.Add(server);
-		}
-
+		var servers = packet.GetServerList();
 		var lastLogin = packet.GetDateTime();
 		var lastLogout = packet.GetDateTime();
 		var unkInt3 = packet.GetInt();
@@ -289,6 +254,21 @@ public class PacketHandler : MonoBehaviour
 		// Transition
 		SceneManager.LoadScene("CharacterSelect");
 		form.State = LoginState.LoggedIn;
+	}
+
+	[PacketHandler(Op.ChannelStatus)]
+	private void ChannelStatus(Packet packet)
+	{
+		var list = GetComponentIn<CharacterSelectList>("LstCharacters");
+		if (list == null)
+			return;
+
+		var servers = packet.GetServerList();
+
+		Connection.Servers.Clear();
+		Connection.Servers.AddRange(servers);
+
+		list.Reset();
 	}
 #pragma warning restore 0168
 }

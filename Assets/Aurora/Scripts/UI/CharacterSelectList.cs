@@ -82,6 +82,15 @@ public class CharacterSelectList : MonoBehaviour
 		SelChannel_OnValueChanged(0);
 	}
 
+	public void Reset()
+	{
+		selectedCharacter = null;
+		selectedChannel = null;
+		BtnStart.interactable = false;
+		SelChannel.interactable = false;
+		SelChannel.ClearOptions();
+	}
+
 	private void SelChannel_OnValueChanged(int selectedIndex)
 	{
 		selectedChannel = channels[selectedIndex];
