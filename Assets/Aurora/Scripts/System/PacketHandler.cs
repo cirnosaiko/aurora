@@ -5,6 +5,7 @@ using Aura.Mabi.Const;
 using Aura.Mabi.Network;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -12,6 +13,33 @@ using UnityEngine.SceneManagement;
 
 public class PacketHandler : MonoBehaviour
 {
+	private delegate void PacketHandlerFunc(Packet packet);
+
+	private class PacketHandlerAttribute : Attribute
+	{
+		public int[] Ops { get; protected set; }
+
+		public PacketHandlerAttribute(params int[] ops)
+		{
+			this.Ops = ops;
+		}
+	}
+
+	private Dictionary<int, PacketHandlerFunc> _handlers = new Dictionary<int, PacketHandlerFunc>();
+
+	void Start()
+	{
+		foreach (var method in this.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
+		{
+			foreach (PacketHandlerAttribute attr in method.GetCustomAttributes(typeof(PacketHandlerAttribute), false))
+			{
+				var del = (PacketHandlerFunc)Delegate.CreateDelegate(typeof(PacketHandlerFunc), this, method);
+				foreach (var op in attr.Ops)
+					_handlers[op] = del;
+			}
+		}
+	}
+
 	void Update()
 	{
 		HandlePackets();
@@ -25,12 +53,25 @@ public class PacketHandler : MonoBehaviour
 		var packets = Connection.Client.GetPacketsFromQueue();
 		foreach (var packet in packets)
 		{
-			switch (packet.Op)
+			PacketHandlerFunc handler;
+			if (!_handlers.TryGetValue(packet.Op, out handler))
 			{
-				case Op.ClientIdentR: HandleClientIdentR(packet); break;
-				case Op.LoginR: HandleLoginR(packet); break;
+				Debug.LogFormat("Unhandled packet: {0:X4} ({1})", packet.Op, Op.GetName(packet.Op));
+				return;
+			}
 
-				default: Debug.LogFormat("Unhandled packet: {0:X4} ({1})", packet.Op, Op.GetName(packet.Op)); break;
+			try
+			{
+				handler(packet);
+			}
+			catch (PacketElementTypeException ex)
+			{
+				Debug.LogError(
+					"PacketElementTypeException: " + ex.Message + Environment.NewLine +
+					ex.StackTrace + Environment.NewLine +
+					"Packet: " + Environment.NewLine +
+					packet.ToString()
+				);
 			}
 		}
 	}
@@ -57,7 +98,8 @@ public class PacketHandler : MonoBehaviour
 #pragma warning disable 0168
 
 	// Ident -> Login
-	private void HandleClientIdentR(Packet packet)
+	[PacketHandler(Op.ClientIdentR)]
+	private void ClientIdentR(Packet packet)
 	{
 		var form = GetLoginForm();
 		if (form == null || form.State != LoginState.Ident)
@@ -85,7 +127,8 @@ public class PacketHandler : MonoBehaviour
 	}
 
 	// Login -> LoggedIn | Ready
-	private void HandleLoginR(Packet packet)
+	[PacketHandler(Op.LoginR)]
+	private void LoginR(Packet packet)
 	{
 		var form = GetLoginForm();
 		if (form == null || form.State != LoginState.Login)
