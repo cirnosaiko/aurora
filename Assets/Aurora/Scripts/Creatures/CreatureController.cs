@@ -17,24 +17,29 @@ public class CreatureController : MonoBehaviour
 	private double moveDuration;
 	private Vector3 movement;
 	private Quaternion rotateTo;
+	private Animator animator;
+	private bool walking;
 
 	void Start()
 	{
 		myTransform = transform;
 		destination = myTransform.position;
 		rotateTo = Quaternion.LookRotation(Vector3.forward);
+		animator = GetComponentInChildren<Animator>();
 	}
 
 	void Update()
 	{
 		var pos = myTransform.position;
 		var rotation = myTransform.rotation;
+		var moving = false;
 
 		// Move
 		if (moveDuration != 0)
 		{
 			moveDuration = Math.Max(0, moveDuration - Time.deltaTime);
 			pos += movement * Time.deltaTime;
+			moving = true;
 		}
 
 		// Gravitate towards floor
@@ -45,6 +50,13 @@ public class CreatureController : MonoBehaviour
 		// Rotate
 		rotation = Quaternion.Slerp(transform.rotation, rotateTo, Time.deltaTime / RotationDelay);
 
+		// Animate
+		if (animator != null)
+		{
+			animator.SetBool("walking", moving && walking);
+			animator.SetBool("running", moving && !walking);
+		}
+
 		myTransform.position = pos;
 		myTransform.rotation = rotation;
 
@@ -54,6 +66,7 @@ public class CreatureController : MonoBehaviour
 	public void Move(Vector3 point, bool walking)
 	{
 		destination = point;
+		this.walking = walking;
 
 		var pos = myTransform.position;
 		var speed = (walking ? WalkingSpeed : RunningSpeed) / 100f;
