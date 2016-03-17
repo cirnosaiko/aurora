@@ -76,23 +76,23 @@ public class PacketHandler : MonoBehaviour
 		}
 	}
 
-	private LoginForm GetLoginForm()
+	private T GetComponentIn<T>(string gameObjectName) where T : MonoBehaviour
 	{
-		var frmLogin = GameObject.Find("FrmLogin");
-		if (frmLogin == null)
+		var gameObj = GameObject.Find(gameObjectName);
+		if (gameObj == null)
 		{
-			Debug.LogError("HandleClientIdentR: FrmLogin not found.");
+			Debug.LogError("GetComponentIn: " + gameObjectName + " not found.");
 			return null;
 		}
 
-		var form = frmLogin.GetComponent<LoginForm>();
-		if (form == null)
+		var component = gameObj.GetComponent<T>();
+		if (component == null)
 		{
-			Debug.LogError("HandleClientIdentR: LoginForm component not found.");
+			Debug.LogError("GetComponentIn: " + typeof(T).Name + " component not found.");
 			return null;
 		}
 
-		return form;
+		return component;
 	}
 
 #pragma warning disable 0168
@@ -101,7 +101,7 @@ public class PacketHandler : MonoBehaviour
 	[PacketHandler(Op.ClientIdentR)]
 	private void ClientIdentR(Packet packet)
 	{
-		var form = GetLoginForm();
+		var form = GetComponentIn<LoginForm>("FrmLogin");
 		if (form == null || form.State != LoginState.Ident)
 			return;
 
@@ -130,7 +130,7 @@ public class PacketHandler : MonoBehaviour
 	[PacketHandler(Op.LoginR)]
 	private void LoginR(Packet packet)
 	{
-		var form = GetLoginForm();
+		var form = GetComponentIn<LoginForm>("FrmLogin");
 		if (form == null || form.State != LoginState.Login)
 			return;
 
