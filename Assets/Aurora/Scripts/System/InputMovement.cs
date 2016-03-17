@@ -36,8 +36,9 @@ public class InputMovement : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit))
 			{
+				var shift = Input.GetKey(KeyCode.LeftShift);
 				var controller = target.GetComponent<CreatureController>();
-				controller.Move(hit.point, false);
+				controller.Move(hit.point, shift);
 			}
 		}
 	}
