@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
 	public float RotationSpeed = 360;
 	public float MinTilde = -30;
 	public float MaxTilde = 60;
-	public float MinZoom = 2;
+	public float MinZoom = 1;
 	public float MaxZoom = 15;
 	public float ZoomSpeed = 20;
 
