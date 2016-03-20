@@ -44,7 +44,7 @@ public class CreatureController : MonoBehaviour
 
 		// Gravitate towards floor
 		RaycastHit hit;
-		if (Physics.Raycast(pos + Vector3.up * 10, Vector3.down, out hit))
+		if (Physics.Raycast(pos + Vector3.up * 1000, Vector3.down, out hit))
 			pos.y = hit.point.y;
 
 		// Rotate
