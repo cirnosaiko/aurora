@@ -67,7 +67,11 @@ public class CharacterSelectList : MonoBehaviour
 		UpdateChannels(selectedCharacter.Server);
 		SelChannel.interactable = true;
 
-		TxtSelectedChar.text = string.Format("<size=16>{0}</size>\n{1}", selectedCharacter.Server, selectedCharacter.Name);
+		var server = selectedCharacter.Server;
+		var name = selectedCharacter.Name;
+		var color = MabiMath.GetNameColor(name).ToString("X6");
+
+		TxtSelectedChar.text = string.Format("<size=20>{0}</size>\n<color=#{2}>{1}</color>", server, name, color);
 	}
 
 	private void UpdateChannels(string serverName)
