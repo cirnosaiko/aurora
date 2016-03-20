@@ -15,6 +15,7 @@ public class CharacterSelectList : MonoBehaviour
 	public GameObject ButtonReference;
 	public Dropdown SelChannel;
 	public Button BtnStart;
+	public Text TxtSelectedChar;
 
 	private CharacterInfo[] characters;
 	private List<ChannelInfo> channels = new List<ChannelInfo>();
@@ -48,6 +49,10 @@ public class CharacterSelectList : MonoBehaviour
 		SelChannel.interactable = false;
 		SelChannel.onValueChanged.AddListener(SelChannel_OnValueChanged);
 		SelChannel.ClearOptions();
+
+		TxtSelectedChar.gameObject.SetActive(characters.Length != 0);
+		if (characters.Length != 0)
+			OnCharacterSelected(characters[0].EntityId);
 	}
 
 	private void OnCharacterSelected(long entityId)
@@ -61,6 +66,8 @@ public class CharacterSelectList : MonoBehaviour
 
 		UpdateChannels(selectedCharacter.Server);
 		SelChannel.interactable = true;
+
+		TxtSelectedChar.text = string.Format("<size=16>{0}</size>\n{1}", selectedCharacter.Server, selectedCharacter.Name);
 	}
 
 	private void UpdateChannels(string serverName)
