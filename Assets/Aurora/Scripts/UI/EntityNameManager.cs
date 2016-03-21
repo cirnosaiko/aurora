@@ -32,12 +32,16 @@ public class EntityNameManager : MonoBehaviour
 			if (string.IsNullOrEmpty(entityInfo.Name))
 				continue;
 
+			// Get information for placement
+			var nameTarget = entityTransform.FindChild("NameTarget");
+			var pos = mainCamera.WorldToScreenPoint(nameTarget.transform.position);
+
 			// Create new name object if new entity
 			Transform nameTransform;
 			if (!nameTransforms.TryGetValue(entityTransform, out nameTransform))
 			{
 				// Create object in list
-				var newNameObj = GameObject.Instantiate(reference);
+				var newNameObj = (GameObject)GameObject.Instantiate(reference, pos, Quaternion.identity);
 				nameTransform = newNameObj.transform;
 				nameTransform.SetParent(me);
 
@@ -51,10 +55,7 @@ public class EntityNameManager : MonoBehaviour
 				nameTransforms.Add(entityTransform, nameTransform);
 			}
 
-			// Get information for placement
 			var nameObject = nameTransform.gameObject;
-			var nameTarget = entityTransform.FindChild("NameTarget");
-			var pos = mainCamera.WorldToScreenPoint(nameTarget.transform.position);
 
 			// If entity is visible, activate name object and move it into
 			// position.
