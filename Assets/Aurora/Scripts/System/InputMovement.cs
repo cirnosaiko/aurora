@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using Aura.Mabi.Network;
 
 public class InputMovement : MonoBehaviour
 {
@@ -37,8 +38,18 @@ public class InputMovement : MonoBehaviour
 			if (Physics.Raycast(ray, out hit))
 			{
 				var shift = Input.GetKey(KeyCode.LeftShift);
-				var controller = target.GetComponent<CreatureController>();
-				controller.Move(hit.point, shift);
+				//var controller = target.GetComponent<CreatureController>();
+				//controller.Move(hit.point, shift);
+
+				var x = (int)(hit.point.x * 100);
+				var y = (int)(hit.point.z * 100);
+
+				var packet = new Packet(shift ? Op.Walk : Op.Run, Connection.ControllingEntityId);
+				packet.PutInt(x);
+				packet.PutInt(y);
+				packet.PutByte(1);
+				packet.PutByte(0);
+				Connection.Client.Send(packet);
 			}
 		}
 	}

@@ -495,5 +495,26 @@ public class PacketHandler : MonoBehaviour
 
 		return creature;
 	}
+
+	[PacketHandler(Op.Walking, Op.Running)]
+	private void Moving(Packet packet)
+	{
+		var fromX = packet.GetInt();
+		var fromY = packet.GetInt();
+		var toX = packet.GetInt();
+		var toY = packet.GetInt();
+
+		var walking = (packet.Op == Op.Walking);
+		var x = toX / 100f;
+		var y = toY / 100f;
+
+		Creature entity;
+		if (Connection.Entities.TryGetValue(packet.Id, out entity))
+		{
+			var controller = entity.Transform.GetComponent<CreatureController>();
+			if (controller != null)
+				controller.Move(new Vector3(x, 0, y), walking);
+		}
+	}
 #pragma warning restore 0168
 }

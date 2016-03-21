@@ -79,7 +79,7 @@ public class EntityNameManager : MonoBehaviour
 			{
 				var nameTransform = nameTransformX.Value;
 
-				GameObject.Destroy(nameTransform);
+				GameObject.Destroy(nameTransform.gameObject);
 				toRemove.Add(entityTransform);
 			}
 		}
