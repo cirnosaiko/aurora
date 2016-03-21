@@ -57,7 +57,7 @@ public class PacketHandler : MonoBehaviour
 			if (!_handlers.TryGetValue(packet.Op, out handler))
 			{
 				Debug.LogFormat("Unhandled packet: {0:X4} ({1})", packet.Op, Op.GetName(packet.Op));
-				return;
+				continue;
 			}
 
 			try
