@@ -62,11 +62,13 @@ public class Client
 		{
 			this.LastError = string.Format("{0}", ex.SocketErrorCode, ex.Message);
 			this.LastException = ex;
+			Debug.LogException(ex);
 		}
 		catch (Exception ex)
 		{
 			this.LastError = ex.Message;
 			this.LastException = ex;
+			Debug.LogException(ex);
 		}
 
 		if (!success)
@@ -105,11 +107,13 @@ public class Client
 		{
 			this.LastError = string.Format("{0}", ex.SocketErrorCode, ex.Message);
 			this.LastException = ex;
+			Debug.LogException(ex);
 		}
 		catch (Exception ex)
 		{
 			this.LastError = ex.Message;
 			this.LastException = ex;
+			Debug.LogException(ex);
 		}
 
 		if (!success)
@@ -191,8 +195,10 @@ public class Client
 		}
 		catch (SocketException ex)
 		{
-			this.Disconnect();
+			//this.Disconnect();
 			this.LastError = ex.Message;
+			this.LastException = ex;
+			//Debug.LogException(ex);
 		}
 		catch (Exception ex)
 		{
