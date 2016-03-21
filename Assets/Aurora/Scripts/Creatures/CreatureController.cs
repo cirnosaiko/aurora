@@ -24,7 +24,7 @@ public class CreatureController : MonoBehaviour
 	{
 		myTransform = transform;
 		destination = myTransform.position;
-		rotateTo = Quaternion.LookRotation(Vector3.forward);
+		rotateTo = myTransform.rotation;
 		animator = GetComponentInChildren<Animator>();
 	}
 

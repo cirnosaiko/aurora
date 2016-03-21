@@ -408,12 +408,14 @@ public class PacketHandler : MonoBehaviour
 			if (type == DataType.Creature)
 			{
 				var creature = ParseCreature(entityPacket);
+				var rotation = -(1f / 255 * creature.Direction * 360) + 90;
 
 				var creatureObj = GameObject.Instantiate(DummyCreature);
 				creatureObj.name = string.Format("{0} ({1:X16})", creature.Name, creature.EntityId);
 
 				creature.Transform = creatureObj.transform;
 				creature.Transform.position = new Vector3(creature.X / 100f, 0, creature.Z / 100f);
+				creature.Transform.rotation = Quaternion.AngleAxis(rotation, Vector3.up);
 				creature.Transform.SetParent(entityList);
 				Connection.Entities.Add(creature.EntityId, creature);
 
