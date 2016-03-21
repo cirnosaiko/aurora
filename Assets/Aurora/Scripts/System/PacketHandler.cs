@@ -53,6 +53,8 @@ public class PacketHandler : MonoBehaviour
 		var packets = Connection.Client.GetPacketsFromQueue();
 		foreach (var packet in packets)
 		{
+			//Debug.Log(packet);
+
 			PacketHandlerFunc handler;
 			if (!_handlers.TryGetValue(packet.Op, out handler))
 			{
@@ -66,12 +68,8 @@ public class PacketHandler : MonoBehaviour
 			}
 			catch (PacketElementTypeException ex)
 			{
-				Debug.LogError(
-					"PacketElementTypeException: " + ex.Message + Environment.NewLine +
-					ex.StackTrace + Environment.NewLine +
-					"Packet: " + Environment.NewLine +
-					packet.ToString()
-				);
+				Debug.LogException(ex);
+				Debug.Log("Packet: " + packet);
 			}
 		}
 	}
@@ -103,7 +101,10 @@ public class PacketHandler : MonoBehaviour
 	{
 		var form = GetComponentIn<LoginForm>("FrmLogin");
 		if (form == null || form.State != LoginState.Ident)
+		{
+			Debug.Log("Received ClientIdentR outside of login or in incorrect state.");
 			return;
+		}
 
 		var username = form.TxtUsername.text;
 		var password = form.TxtPassword.text;
@@ -132,7 +133,10 @@ public class PacketHandler : MonoBehaviour
 	{
 		var form = GetComponentIn<LoginForm>("FrmLogin");
 		if (form == null || form.State != LoginState.Login)
+		{
+			Debug.Log("Received LoginR outside of login or in incorrect state.");
 			return;
+		}
 
 		var result = (LoginResult)packet.GetByte();
 		if (result != LoginResult.Success)
@@ -261,7 +265,10 @@ public class PacketHandler : MonoBehaviour
 	{
 		var list = GetComponentIn<CharacterSelectList>("LstCharacters");
 		if (list == null)
+		{
+			Debug.Log("Received ChannelStatus outside of character selection or in incorrect state.");
 			return;
+		}
 
 		var servers = packet.GetServerList();
 
