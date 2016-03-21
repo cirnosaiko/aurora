@@ -10,4 +10,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Aurora/Regions/CharacterSelect.unity
   - enabled: 1
+    path: Assets/Aurora/Regions/Loading.unity
+  - enabled: 1
     path: Assets/Aurora/Regions/Uladh_main.unity
