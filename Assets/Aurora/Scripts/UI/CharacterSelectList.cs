@@ -8,6 +8,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Aura.Mabi.Const;
+using Aura.Mabi.Network;
+using Aura.Mabi;
 
 public class CharacterSelectList : MonoBehaviour
 {
@@ -17,10 +19,15 @@ public class CharacterSelectList : MonoBehaviour
 	public Button BtnStart;
 	public Text TxtSelectedChar;
 
+	[HideInInspector]
+	public CharacterSelectState State;
+
 	private CharacterInfo[] characters;
 	private List<ChannelInfo> channels = new List<ChannelInfo>();
 	private CharacterInfo selectedCharacter;
 	private ChannelInfo selectedChannel;
+	private CharacterSelectState prevState;
+	private MsgBox stateInfo;
 
 	void Start()
 	{
@@ -55,6 +62,45 @@ public class CharacterSelectList : MonoBehaviour
 			OnCharacterSelected(characters[0].EntityId);
 	}
 
+	void Update()
+	{
+		var connecting = false;
+		if (prevState != State && State == CharacterSelectState.Connecting)
+		{
+			if (stateInfo != null)
+				stateInfo.Close();
+
+			stateInfo = MsgBox.Show("Connecting...", MsgBoxButtons.None);
+			connecting = true;
+		}
+
+		prevState = State;
+
+		if (connecting)
+			return;
+
+		if (State != CharacterSelectState.Waiting && Connection.Client.State == ConnectionState.Disconnected)
+		{
+			State = CharacterSelectState.Waiting;
+
+			if (stateInfo != null)
+				stateInfo.Close();
+
+			MsgBox.Show("Failed to connect.");
+		}
+		else if (State == CharacterSelectState.Connecting && Connection.Client.State == ConnectionState.Connected)
+		{
+			State = CharacterSelectState.Login;
+
+			var packet = new Packet(Op.ChannelLogin, 0x200000000000000F);
+			packet.PutString(Connection.AccountName);
+			packet.PutString(Connection.AccountName);
+			packet.PutLong(Connection.SessionKey);
+			packet.PutLong(selectedCharacter.EntityId);
+			Connection.Client.Send(packet);
+		}
+	}
+
 	private void OnCharacterSelected(long entityId)
 	{
 		selectedCharacter = characters.FirstOrDefault(a => a.EntityId == entityId);
@@ -72,6 +118,7 @@ public class CharacterSelectList : MonoBehaviour
 		var color = MabiMath.GetNameColor(name).ToString("X6");
 
 		TxtSelectedChar.text = string.Format("<size=20>{0}</size>\n<color=#{2}>{1}</color>", server, name, color);
+		Connection.SelectedCharacter = selectedCharacter;
 	}
 
 	private void UpdateChannels(string serverName)
@@ -116,7 +163,30 @@ public class CharacterSelectList : MonoBehaviour
 			return;
 		}
 
-		MsgBox.Show("TODO: Login with " + selectedCharacter.Name + " on " + selectedChannel.Name + ".");
-		//SceneManager.LoadScene("Uladh_main");
+		State = CharacterSelectState.Connecting;
+
+		var packet = new Packet(Op.DisconnectInform, 0);
+		packet.PutString(Connection.AccountName);
+		packet.PutLong(Connection.SessionKey);
+		packet.PutUInt(0x800000EE);
+		packet.PutUInt(0);
+		packet.PutUInt(0);
+		Connection.Client.Send(packet);
+
+		packet = new Packet(Op.ChannelInfoRequest, 0);
+		packet.PutString(selectedCharacter.Server);
+		packet.PutString(selectedChannel.Name);
+		packet.PutByte(0);
+		packet.PutInt(1);
+		packet.PutLong(selectedCharacter.EntityId);
+		Connection.Client.Send(packet);
 	}
+}
+
+public enum CharacterSelectState
+{
+	Waiting,
+	Connecting,
+	Login,
+	LoggedIn,
 }

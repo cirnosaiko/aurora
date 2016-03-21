@@ -13,6 +13,7 @@ public static class Connection
 	public static long SessionKey;
 	public static List<ServerInfo> Servers = new List<ServerInfo>();
 	public static List<CharacterInfo> Characters = new List<CharacterInfo>();
+	public static CharacterInfo SelectedCharacter;
 
 	public static void Reset()
 	{

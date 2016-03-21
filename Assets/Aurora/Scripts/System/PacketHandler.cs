@@ -277,5 +277,100 @@ public class PacketHandler : MonoBehaviour
 
 		list.Reset();
 	}
+
+	[PacketHandler(Op.ChannelInfoRequestR)]
+	private void ChannelInfoRequestR(Packet packet)
+	{
+		var list = GetComponentIn<CharacterSelectList>("LstCharacters");
+		if (list == null || list.State != CharacterSelectState.Connecting)
+		{
+			Debug.Log("Received ChannelInfoRequestR outside of character selection or in incorrect state.");
+			return;
+		}
+
+		var success = packet.GetBool();
+		if (!success)
+		{
+			MsgBox.Show("No channel information received.");
+			return;
+		}
+
+		var serverName = packet.GetString();
+		var channelName = packet.GetString();
+		var channelNumber = packet.GetShort();
+		var ip1 = packet.GetString();
+		var ip2 = packet.GetString();
+		var port1 = packet.GetShort();
+		var port2 = packet.GetShort();
+		var unkInt1 = packet.GetInt();
+		var creatureEntityId = packet.GetLong();
+
+		Debug.Log("Connecting to channel at " + ip1 + ":" + port1 + "...");
+		Connection.Client.ConnectAsync(ip1, port1);
+	}
+
+	[PacketHandler(Op.ChannelLoginR)]
+	private void ChannelLoginR(Packet packet)
+	{
+		var list = GetComponentIn<CharacterSelectList>("LstCharacters");
+		if (list == null || list.State != CharacterSelectState.Login)
+		{
+			Debug.Log("Received ChannelLoginR outside of character selection or in incorrect state.");
+			return;
+		}
+
+		var success = packet.GetBool();
+		if (!success)
+		{
+			MsgBox.Show("No channel information received.");
+			return;
+		}
+
+		var creatureEntityId = packet.GetLong();
+		var now = packet.GetDateTime();
+		var unkInt1 = packet.GetInt();
+		var unkUrl = packet.GetString();
+
+		list.State = CharacterSelectState.LoggedIn;
+	}
+
+	[PacketHandler(Op.EnterRegion)]
+	private void EnterRegion(Packet packet)
+	{
+		var creatureEntityId = packet.GetLong();
+		var unkByte1 = packet.GetByte();
+		var regionId = packet.GetInt();
+		var x = packet.GetInt();
+		var y = packet.GetInt();
+
+		var list = GetComponentIn<CharacterSelectList>("LstCharacters");
+		if (list != null)
+			list.State = CharacterSelectState.LoggedIn;
+
+		//SceneManager.LoadScene("Uladh_main");
+
+		//packet = new Packet(Op.EnterRegionRequest, creatureEntityId);
+		//Connection.Client.Send(packet);
+
+		if (!RegionManager.Load(regionId))
+			MsgBox.Show("Failed to load region, it might not exist in Aurora yet.");
+	}
+
+	[PacketHandler(Op.EnterRegionRequestR)]
+	private void EnterRegionRequestR(Packet packet)
+	{
+		var success = packet.GetBool();
+		if (!success)
+		{
+			MsgBox.Show("Enter region request failed.");
+			return;
+		}
+
+		var creatureEntityId = packet.GetLong();
+		var now = packet.GetDateTime();
+
+		packet = new Packet(Op.ChannelCharacterInfoRequest, creatureEntityId);
+		Connection.Client.Send(packet);
+	}
 #pragma warning restore 0168
 }
