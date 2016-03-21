@@ -60,9 +60,9 @@ public class EntityNameManager : MonoBehaviour
 			// position.
 			if (pos.z > 0)
 			{
+				nameTransform.position = pos;
 				if (!nameObject.activeSelf)
 					nameObject.SetActive(true);
-				nameTransform.position = pos;
 			}
 			// If entity is not visible deactivate the name.
 			else if (nameObject.activeSelf)
