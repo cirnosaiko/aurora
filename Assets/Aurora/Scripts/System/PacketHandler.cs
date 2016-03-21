@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
 
 public class PacketHandler : MonoBehaviour
 {
+	public GameObject DummyCreature;
+
 	private delegate void PacketHandlerFunc(Packet packet);
 
 	private class PacketHandlerAttribute : Attribute
@@ -371,6 +373,97 @@ public class PacketHandler : MonoBehaviour
 
 		packet = new Packet(Op.ChannelCharacterInfoRequest, creatureEntityId);
 		Connection.Client.Send(packet);
+	}
+
+	[PacketHandler(Op.ChannelCharacterInfoRequestR)]
+	private void ChannelCharacterInfoRequestR(Packet packet)
+	{
+		var success = packet.GetBool();
+		if (!success)
+		{
+			MsgBox.Show("Character info request.");
+			return;
+		}
+
+		var creature = ParseCreature(packet);
+
+		Connection.ControllingEntity = creature.EntityId;
+	}
+
+	[PacketHandler(Op.EntitiesAppear)]
+	private void EntitiesAppear(Packet packet)
+	{
+		var entityList = GameObject.Find("Entities").transform;
+
+		var entityCount = packet.GetShort();
+		for (int i = 0; i < entityCount; ++i)
+		{
+			var type = (DataType)packet.GetShort();
+			var length = packet.GetInt();
+			var bin = packet.GetBin();
+
+			var entityPacket = new Packet(bin, 0);
+
+			if (type == DataType.Creature)
+			{
+				var creature = ParseCreature(entityPacket);
+				var creatureObj = GameObject.Instantiate(DummyCreature);
+				creatureObj.transform.position = new Vector3(creature.X / 100f, 0, creature.Z / 100f);
+				creatureObj.transform.SetParent(entityList);
+
+				var entityInfo = creatureObj.GetComponent<EntityInfo>();
+				entityInfo.Id = creature.EntityId;
+				entityInfo.Name = creature.Name;
+
+				if (creature.EntityId == Connection.ControllingEntity)
+				{
+					GetComponentInChildren<InputMovement>().SetTarget(creatureObj);
+					GetComponentInChildren<CameraController>().SetTarget(creatureObj);
+				}
+			}
+		}
+	}
+
+	private Creature ParseCreature(Packet packet)
+	{
+		var stateEx = (CreatureStatesEx)0;
+
+		var entityId = packet.GetLong();
+		var type = (CreaturePacketType)packet.GetByte();
+		var name = packet.GetString();
+		var unkString1 = packet.GetString();
+		var unkString2 = packet.GetString();
+		var race = packet.GetInt();
+		var skinColor = packet.GetByte();
+		var eyeType = packet.GetShort();
+		var eyeColor = packet.GetByte();
+		var mouthType = packet.GetByte();
+		var state = (CreatureStates)packet.GetInt();
+		if (type == CreaturePacketType.Public)
+		{
+			stateEx = (CreatureStatesEx)packet.GetInt();
+			var unkInt1 = packet.GetInt();
+		}
+		var height = packet.GetFloat();
+		var weight = packet.GetFloat();
+		var upper = packet.GetFloat();
+		var lower = packet.GetFloat();
+		var regionId = packet.GetInt();
+		var x = packet.GetInt();
+		var y = packet.GetInt();
+		var direction = packet.GetByte();
+
+		// ...
+
+		var creature = new Creature();
+		creature.EntityId = entityId;
+		creature.Name = name;
+		creature.RegionId = regionId;
+		creature.X = x;
+		creature.Z = y;
+		creature.Direction = direction;
+
+		return creature;
 	}
 #pragma warning restore 0168
 }

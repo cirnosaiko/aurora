@@ -14,6 +14,7 @@ public static class Connection
 	public static List<ServerInfo> Servers = new List<ServerInfo>();
 	public static List<CharacterInfo> Characters = new List<CharacterInfo>();
 	public static CharacterInfo SelectedCharacter;
+	public static long ControllingEntity;
 
 	public static void Reset()
 	{
