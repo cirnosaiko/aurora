@@ -140,19 +140,19 @@ public class CharacterSelectList : MonoBehaviour
 		SelChannel_OnValueChanged(0);
 	}
 
-	public void Reset()
+	public void UpdateChannels()
 	{
-		selectedCharacter = null;
-		selectedChannel = null;
-		BtnStart.interactable = false;
-		SelChannel.interactable = false;
-		SelChannel.ClearOptions();
+		if (selectedCharacter != null)
+			UpdateChannels(selectedCharacter.Server);
+
+		if (selectedChannel != null)
+			BtnStart.interactable = (selectedChannel.CanJoin && !selectedCharacter.IsPartner);
 	}
 
 	private void SelChannel_OnValueChanged(int selectedIndex)
 	{
 		selectedChannel = channels[selectedIndex];
-		BtnStart.interactable = (selectedChannel.State != ChannelState.Maintenance && selectedChannel.State < ChannelState.Bursting && !selectedCharacter.IsPartner);
+		BtnStart.interactable = (selectedChannel.CanJoin && !selectedCharacter.IsPartner);
 	}
 
 	private void BtnStart_OnClick()

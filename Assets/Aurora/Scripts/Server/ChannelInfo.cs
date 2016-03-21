@@ -9,4 +9,6 @@ public class ChannelInfo
 	public ChannelState State;
 	public ChannelEvent Events;
 	public int Stress;
+
+	public bool CanJoin { get { return State != ChannelState.Maintenance && State < ChannelState.Bursting; } }
 }

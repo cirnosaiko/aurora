@@ -275,7 +275,7 @@ public class PacketHandler : MonoBehaviour
 		Connection.Servers.Clear();
 		Connection.Servers.AddRange(servers);
 
-		list.Reset();
+		list.UpdateChannels();
 	}
 
 	[PacketHandler(Op.ChannelInfoRequestR)]
