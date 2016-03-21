@@ -5,10 +5,14 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 using Aura.Mabi.Network;
+using System;
 
 public class InputMovement : MonoBehaviour
 {
+	public float MoveDelay = 0.25f;
+
 	private GameObject target;
+	private float moveDelayTimeout = 0;
 
 	void Start()
 	{
@@ -31,7 +35,10 @@ public class InputMovement : MonoBehaviour
 		if (target == null)
 			return;
 
-		if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
+		if (moveDelayTimeout != 0)
+			moveDelayTimeout = Math.Max(0, moveDelayTimeout - Time.deltaTime);
+
+		if (moveDelayTimeout == 0 && Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
@@ -50,6 +57,8 @@ public class InputMovement : MonoBehaviour
 				packet.PutByte(1);
 				packet.PutByte(0);
 				Connection.Client.Send(packet);
+
+				moveDelayTimeout = MoveDelay;
 			}
 		}
 	}
