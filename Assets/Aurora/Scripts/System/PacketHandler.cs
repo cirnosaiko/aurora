@@ -516,5 +516,30 @@ public class PacketHandler : MonoBehaviour
 				controller.Move(new Vector3(x, 0, y), walking);
 		}
 	}
+
+	[PacketHandler(Op.Chat)]
+	private void Chat(Packet packet)
+	{
+		var chat = GetComponentIn<Chat>("Chat");
+		if (chat == null)
+			return;
+
+		Creature entity;
+		if (!Connection.Entities.TryGetValue(packet.Id, out entity))
+			return;
+
+		var unkByte1 = packet.GetByte();
+		var name = packet.GetString();
+		var message = packet.GetString();
+		var hasColor = packet.GetBool();
+		var color = packet.GetInt();
+		var unkInt1 = packet.GetInt();
+		var unkByte2 = packet.GetByte();
+
+		if (!hasColor)
+			chat.AddMessage(name, message);
+		else
+			chat.AddMessage(color, name, message);
+	}
 #pragma warning restore 0168
 }
