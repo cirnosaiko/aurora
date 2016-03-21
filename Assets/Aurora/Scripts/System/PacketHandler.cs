@@ -387,13 +387,14 @@ public class PacketHandler : MonoBehaviour
 
 		var creature = ParseCreature(packet);
 
-		Connection.ControllingEntity = creature.EntityId;
+		Connection.ControllingEntityId = creature.EntityId;
 	}
 
 	[PacketHandler(Op.EntitiesAppear)]
 	private void EntitiesAppear(Packet packet)
 	{
 		var entityList = GameObject.Find("Entities").transform;
+		Debug.Log("Controlling: " + Connection.ControllingEntityId.ToString("X16"));
 
 		var entityCount = packet.GetShort();
 		for (int i = 0; i < entityCount; ++i)
@@ -407,19 +408,48 @@ public class PacketHandler : MonoBehaviour
 			if (type == DataType.Creature)
 			{
 				var creature = ParseCreature(entityPacket);
+
 				var creatureObj = GameObject.Instantiate(DummyCreature);
-				creatureObj.transform.position = new Vector3(creature.X / 100f, 0, creature.Z / 100f);
-				creatureObj.transform.SetParent(entityList);
+				creatureObj.name = string.Format("{0} ({1:X16})", creature.Name, creature.EntityId);
+
+				creature.Transform = creatureObj.transform;
+				creature.Transform.position = new Vector3(creature.X / 100f, 0, creature.Z / 100f);
+				creature.Transform.SetParent(entityList);
+				Connection.Entities.Add(creature.EntityId, creature);
 
 				var entityInfo = creatureObj.GetComponent<EntityInfo>();
 				entityInfo.Id = creature.EntityId;
 				entityInfo.Name = creature.Name;
 
-				if (creature.EntityId == Connection.ControllingEntity)
+				if (creature.EntityId == Connection.ControllingEntityId)
 				{
 					GetComponentInChildren<InputMovement>().SetTarget(creatureObj);
 					GetComponentInChildren<CameraController>().SetTarget(creatureObj);
+					Debug.Log("Target: " + creatureObj.name);
 				}
+			}
+			// items...
+			// props...
+		}
+	}
+
+	[PacketHandler(Op.EntitiesDisappear)]
+	private void EntitiesDisappear(Packet packet)
+	{
+		var entityList = GameObject.Find("Entities").transform;
+		var toRemove = new HashSet<long>();
+
+		var entityCount = packet.GetShort();
+		for (int i = 0; i < entityCount; ++i)
+		{
+			var type = (DataType)packet.GetShort();
+			var entityId = packet.GetLong();
+
+			Creature entity;
+			if (Connection.Entities.TryGetValue(entityId, out entity))
+			{
+				GameObject.Destroy(entity.Transform.gameObject);
+				Connection.Entities.Remove(entityId);
 			}
 		}
 	}
