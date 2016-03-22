@@ -2038,6 +2038,7 @@ MonoBehaviour:
   ReferenceMessage: {fileID: 122844, guid: bcf864554999fe847b202cad0d7cfda4, type: 2}
   WndChatLog: {fileID: 22428880}
   WndChatLogMessages: {fileID: 22437780}
+  WndChatScrollView: {fileID: 11469322}
 --- !u!114 &11482548
 MonoBehaviour:
   m_ObjectHideFlags: 1

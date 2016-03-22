@@ -19,8 +19,10 @@ public class Chat : MonoBehaviour
 
 	public Transform WndChatLog;
 	public Transform WndChatLogMessages;
+	public ScrollRect WndChatScrollView;
 
 	private Image background;
+	private int scrollDown;
 
 	void Start()
 	{
@@ -30,6 +32,15 @@ public class Chat : MonoBehaviour
 
 	void Update()
 	{
+		// Scroll down over multiple frames, to makes sure it actually does
+		// scroll all the way down. No matter what I did, the last message
+		// were always hidden...
+		if (scrollDown != 0)
+		{
+			scrollDown = Mathf.Max(0, scrollDown - 1);
+			WndChatScrollView.verticalNormalizedPosition = 0;
+		}
+
 		// Toggle input
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
@@ -124,13 +135,12 @@ public class Chat : MonoBehaviour
 		msgObj.transform.SetParent(Messages);
 		LimitChildren(Messages, MaxMessages);
 
-		if (WndChatLogMessages != null)
-		{
-			var msgObj2 = GameObject.Instantiate(msgObj);
-			msgObj2.GetComponent<FadeAndDestroyTextAfterTime>().enabled = false;
-			msgObj2.transform.SetParent(WndChatLogMessages);
-			LimitChildren(WndChatLogMessages, MaxLogMessages);
-		}
+		// Log
+		var msgObj2 = GameObject.Instantiate(msgObj);
+		msgObj2.GetComponent<FadeAndDestroyTextAfterTime>().enabled = false;
+		msgObj2.transform.SetParent(WndChatLogMessages);
+		LimitChildren(WndChatLogMessages, MaxLogMessages);
+		scrollDown = 3;
 	}
 
 	private void LimitChildren(Transform transform, int max)
