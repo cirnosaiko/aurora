@@ -44,13 +44,36 @@ public class Chat : MonoBehaviour
 		// Toggle input
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			TxtChat.gameObject.SetActive(!TxtChat.gameObject.activeSelf);
-			if (TxtChat.gameObject.activeSelf)
-				TxtChat.OnPointerClick(new PointerEventData(EventSystem.current));
+			if (EventSystem.current.currentSelectedGameObject == TxtChat.gameObject)
+			{
+				var text = TxtChat.text.TrimEnd();
+				if (text != "")
+				{
+					// If input field is selected and there's text,
+					// send the text.
+					SendChatMessage(text);
+					TxtChat.text = "";
+
+					// Click it again, so it doesn't lose focus, this way it
+					// doesn't disappear until you press return with the
+					// field being empty.
+					TxtChat.OnPointerClick(new PointerEventData(EventSystem.current));
+				}
+				else
+				{
+					// If there's no text, disable the input field and
+					// deselect it, so the check doesn't trigger next round.
+					TxtChat.gameObject.SetActive(false);
+					EventSystem.current.SetSelectedGameObject(null);
+				}
+			}
 			else
-				// Select nothing, so the input field doesn't stay selected,
-				// preventing the log toggle.
-				EventSystem.current.SetSelectedGameObject(null);
+			{
+				// If input field isn't selected, activate and click it,
+				// make it appear and focus it.
+				TxtChat.gameObject.SetActive(true);
+				TxtChat.OnPointerClick(new PointerEventData(EventSystem.current));
+			}
 		}
 
 		// Toggle background gradient
@@ -86,27 +109,19 @@ public class Chat : MonoBehaviour
 		}
 	}
 
-	void OnGUI()
+	private void SendChatMessage(string text)
 	{
-		// Submit message, done here because isFocused doesn't work properly
-		// from Update.
-		var text = TxtChat.text.TrimEnd();
-		if (Input.GetKeyDown(KeyCode.Return) && TxtChat.isFocused && text != "")
+		if (Connection.Client.State == ConnectionState.Connected)
 		{
-			if (Connection.Client.State == ConnectionState.Connected)
-			{
-				var packet = new Packet(Op.Chat, Connection.ControllingEntityId);
-				packet.PutByte(1);
-				packet.PutString(text);
-				Connection.Client.Send(packet);
-			}
+			var packet = new Packet(Op.Chat, Connection.ControllingEntityId);
+			packet.PutByte(1);
+			packet.PutString(text);
+			Connection.Client.Send(packet);
+		}
+		else
+		{
 			// Offline test
-			else
-			{
-				AddMessage("test", text);
-			}
-
-			TxtChat.text = "";
+			AddMessage("test", text);
 		}
 	}
 
