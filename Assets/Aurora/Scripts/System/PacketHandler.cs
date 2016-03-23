@@ -543,5 +543,18 @@ public class PacketHandler : MonoBehaviour
 		else
 			chat.AddMessage(color, name, message);
 	}
+
+	[PacketHandler(Op.WhisperChat)]
+	private void WhisperChat(Packet packet)
+	{
+		var chat = GetComponentIn<Chat>("Chat");
+		if (chat == null)
+			return;
+
+		var sender = packet.GetString();
+		var message = packet.GetString();
+
+		chat.AddMessage(sender + " > " + Connection.SelectedCharacter.Name, message);
+	}
 #pragma warning restore 0168
 }

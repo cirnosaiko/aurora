@@ -111,17 +111,45 @@ public class Chat : MonoBehaviour
 
 	private void SendChatMessage(string text)
 	{
-		if (Connection.Client.State == ConnectionState.Connected)
+		// Whisper
+		if (text.StartsWith("@"))
 		{
-			var packet = new Packet(Op.Chat, Connection.ControllingEntityId);
-			packet.PutByte(1);
-			packet.PutString(text);
-			Connection.Client.Send(packet);
+			// Ignore whispers without spaces (empty message part)
+			var index = text.IndexOf(' ');
+			if (index == -1)
+				return;
+
+			var recipient = text.Substring(1, index - 1).Trim();
+			text = text.Substring(index + 1).Trim();
+
+			if (Connection.Client.State == ConnectionState.Connected)
+			{
+				var packet = new Packet(Op.WhisperChat, Connection.ControllingEntityId);
+				packet.PutString(recipient);
+				packet.PutString(text);
+				Connection.Client.Send(packet);
+			}
+			else
+			{
+				// Offline test
+				AddMessage("test > " + recipient, text);
+			}
 		}
+		// Normal
 		else
 		{
-			// Offline test
-			AddMessage("test", text);
+			if (Connection.Client.State == ConnectionState.Connected)
+			{
+				var packet = new Packet(Op.Chat, Connection.ControllingEntityId);
+				packet.PutByte(1);
+				packet.PutString(text);
+				Connection.Client.Send(packet);
+			}
+			else
+			{
+				// Offline test
+				AddMessage("test", text);
+			}
 		}
 	}
 
