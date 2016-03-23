@@ -349,11 +349,6 @@ public class PacketHandler : MonoBehaviour
 		if (list != null)
 			list.State = CharacterSelectState.LoggedIn;
 
-		//SceneManager.LoadScene("Uladh_main");
-
-		//packet = new Packet(Op.EnterRegionRequest, creatureEntityId);
-		//Connection.Client.Send(packet);
-
 		if (!RegionManager.Load(regionId))
 			MsgBox.Show("Failed to load region, it might not exist in Aurora yet.");
 	}
