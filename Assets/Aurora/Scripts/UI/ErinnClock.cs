@@ -8,8 +8,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class ErinnClock : MonoBehaviour
 {
-	public bool TwentyFour = false;
-	public bool ShowMinutes = false;
+	public bool twentyFour = false;
+	public bool showMinutes = false;
+
+	// Properties allow dynamic setting from events in the editor,
+	// but fields are the only thing shown in the script options in the editor.
+	public bool TwentyFour { get { return twentyFour; } set { twentyFour = value; } }
+	public bool ShowMinutes { get { return showMinutes; } set { showMinutes = value; } }
 
 	private Text text;
 
@@ -26,14 +31,14 @@ public class ErinnClock : MonoBehaviour
 		var pastNoon = (hour >= 12);
 		var pastOne = (hour >= 13);
 
-		if (!TwentyFour && pastOne)
+		if (!twentyFour && pastOne)
 			hour -= 12;
 
-		if (!ShowMinutes)
+		if (!showMinutes)
 			minute -= minute % 10;
 
 		var time = string.Format("{0:00}:{1:00}", hour, minute);
-		if (!TwentyFour)
+		if (!twentyFour)
 			time += " " + (pastNoon ? "P.M." : "A.M.");
 
 		text.text = time;
