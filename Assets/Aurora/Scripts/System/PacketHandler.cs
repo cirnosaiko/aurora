@@ -15,6 +15,8 @@ public class PacketHandler : MonoBehaviour
 {
 	public GameObject DummyCreature;
 
+	private MsgBox regionLoadFailMsg;
+
 	private delegate void PacketHandlerFunc(Packet packet);
 
 	private class PacketHandlerAttribute : Attribute
@@ -45,6 +47,13 @@ public class PacketHandler : MonoBehaviour
 	void Update()
 	{
 		HandlePackets();
+
+		if (regionLoadFailMsg != null && regionLoadFailMsg.Result != MsgBoxResult.Pending)
+		{
+			regionLoadFailMsg = null;
+			Connection.Client.Disconnect();
+			SceneManager.LoadScene("Login");
+		}
 	}
 
 	private void HandlePackets()
@@ -350,7 +359,7 @@ public class PacketHandler : MonoBehaviour
 			list.State = CharacterSelectState.LoggedIn;
 
 		if (!RegionManager.Load(regionId))
-			MsgBox.Show("Failed to load region, it might not exist in Aurora yet.");
+			regionLoadFailMsg = MsgBox.Show("Failed to load region, it might not exist in Aurora yet.");
 	}
 
 	[PacketHandler(Op.EnterRegionRequestR)]
