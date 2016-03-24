@@ -40,6 +40,10 @@ public class EntityNameManager : MonoBehaviour
 			Transform nameTransform;
 			if (!nameTransforms.TryGetValue(entityTransform, out nameTransform))
 			{
+				// Get creature
+				Entity creature;
+				Connection.Entities.TryGetValue(entityInfo.Id, out creature);
+
 				// Create object in list
 				var newNameObj = (GameObject)GameObject.Instantiate(reference, pos, Quaternion.identity);
 				nameTransform = newNameObj.transform;
@@ -49,7 +53,13 @@ public class EntityNameManager : MonoBehaviour
 				var color = MabiMath.GetNameColor(entityInfo.Name);
 				var text = nameTransform.GetComponent<Text>();
 				var name = entityInfo.Name;
-				text.text = string.Format("<color=#{0:X6}>{1}</color>", color, name);
+				var displayName = string.Format("<color=#{0:X6}>{1}</color>", color, name);
+
+				// NPC prefix
+				if (entityInfo.IsConversationNpc)
+					displayName = "<size=8>NPC</size> " + displayName;
+
+				text.text = displayName;
 
 				// Save for automatic removal
 				nameTransforms.Add(entityTransform, nameTransform);

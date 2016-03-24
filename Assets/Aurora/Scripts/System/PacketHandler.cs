@@ -417,6 +417,7 @@ public class PacketHandler : MonoBehaviour
 				var entityInfo = creatureObj.GetComponent<EntityInfo>();
 				entityInfo.Id = creature.EntityId;
 				entityInfo.Name = creature.Name;
+				entityInfo.IsConversationNpc = creature.IsConversationNpc;
 
 				if (creature.EntityId == Connection.ControllingEntityId)
 				{
@@ -451,7 +452,7 @@ public class PacketHandler : MonoBehaviour
 		}
 	}
 
-	private Entity ParseCreature(Packet packet)
+	private Creature ParseCreature(Packet packet)
 	{
 		var stateEx = (CreatureStatesEx)0;
 
@@ -482,13 +483,14 @@ public class PacketHandler : MonoBehaviour
 
 		// ...
 
-		var creature = new Entity();
+		var creature = new Creature();
 		creature.EntityId = entityId;
 		creature.Name = name;
 		creature.RegionId = regionId;
 		creature.X = x;
 		creature.Z = y;
 		creature.Direction = direction;
+		creature.State = state;
 
 		return creature;
 	}

@@ -8,4 +8,6 @@ public class EntityInfo : MonoBehaviour
 {
 	public long Id;
 	public string Name;
+
+	public bool IsConversationNpc;
 }
