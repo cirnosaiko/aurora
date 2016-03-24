@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Creature
+public class Entity
 {
 	public long EntityId;
 	public string Name;

@@ -442,7 +442,7 @@ public class PacketHandler : MonoBehaviour
 			var type = (DataType)packet.GetShort();
 			var entityId = packet.GetLong();
 
-			Creature entity;
+			Entity entity;
 			if (Connection.Entities.TryGetValue(entityId, out entity))
 			{
 				GameObject.Destroy(entity.Transform.gameObject);
@@ -451,7 +451,7 @@ public class PacketHandler : MonoBehaviour
 		}
 	}
 
-	private Creature ParseCreature(Packet packet)
+	private Entity ParseCreature(Packet packet)
 	{
 		var stateEx = (CreatureStatesEx)0;
 
@@ -482,7 +482,7 @@ public class PacketHandler : MonoBehaviour
 
 		// ...
 
-		var creature = new Creature();
+		var creature = new Entity();
 		creature.EntityId = entityId;
 		creature.Name = name;
 		creature.RegionId = regionId;
@@ -505,7 +505,7 @@ public class PacketHandler : MonoBehaviour
 		var x = toX / 100f;
 		var y = toY / 100f;
 
-		Creature entity;
+		Entity entity;
 		if (Connection.Entities.TryGetValue(packet.Id, out entity))
 		{
 			var controller = entity.Transform.GetComponent<CreatureController>();
@@ -521,7 +521,7 @@ public class PacketHandler : MonoBehaviour
 		if (chat == null)
 			return;
 
-		Creature entity;
+		Entity entity;
 		if (!Connection.Entities.TryGetValue(packet.Id, out entity))
 			return;
 

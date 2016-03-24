@@ -15,7 +15,7 @@ public static class Connection
 	public static List<CharacterInfo> Characters = new List<CharacterInfo>();
 	public static CharacterInfo SelectedCharacter;
 	public static long ControllingEntityId;
-	public static Dictionary<long, Creature> Entities = new Dictionary<long, Creature>();
+	public static Dictionary<long, Entity> Entities = new Dictionary<long, Entity>();
 
 	public static void Reset()
 	{
