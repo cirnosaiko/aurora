@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Aura development team - Licensed under GNU GPL
 // For more information, see license file in the main folder
 
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,12 +25,17 @@ public class Taskbar : MonoBehaviour
 		if (endGameMsg != null && endGameMsg.Result != MsgBoxResult.Pending)
 		{
 			if (endGameMsg.Result == MsgBoxResult.Yes)
-				Application.Quit();
+			{
+				if (!Application.isEditor)
+					Application.Quit();
+				else
+					EditorApplication.isPlaying = false;
+			}
 
 			endGameMsg = null;
 		}
 
-		// Make taskbar disappear if clicked elsewhere
+		// Make startmenu disappear if clicked elsewhere
 		if (StartMenu.gameObject.activeSelf && Input.GetMouseButtonDown(0) && !startMenuHoverCheck.IsOver)
 			HideStartMenu();
 	}
