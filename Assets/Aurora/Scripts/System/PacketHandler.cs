@@ -358,6 +358,8 @@ public class PacketHandler : MonoBehaviour
 		if (list != null)
 			list.State = CharacterSelectState.LoggedIn;
 
+		Connection.ControllingEntityId = creatureEntityId;
+
 		if (!RegionManager.Load(regionId))
 			regionLoadFailMsg = MsgBox.Show("Failed to load region, it might not exist in Aurora yet.");
 	}
@@ -390,8 +392,6 @@ public class PacketHandler : MonoBehaviour
 		}
 
 		var creature = ParseCreature(packet);
-
-		Connection.ControllingEntityId = creature.EntityId;
 	}
 
 	[PacketHandler(Op.EntitiesAppear)]
