@@ -21,6 +21,9 @@ public class LoginForm : MonoBehaviour
 	public Button BtnLogin;
 	public Button BtnEnd;
 
+	public string Host = "127.0.0.1";
+	public int Port = 11000;
+
 	[HideInInspector]
 	public LoginState State;
 
@@ -32,6 +35,35 @@ public class LoginForm : MonoBehaviour
 	{
 		BtnLogin.onClick.AddListener(BtnLogin_OnClick);
 		BtnEnd.onClick.AddListener(BtnEnd_OnClick);
+
+		var args = Environment.GetCommandLineArgs();
+		if (args.Length > 1)
+		{
+			foreach (var arg in args)
+			{
+				var split = arg.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+				if (split.Length != 2)
+					continue;
+
+				var key = split[0];
+				var value = split[1];
+
+				switch (key)
+				{
+					case "logip": Host = value; break;
+					case "logport":
+						try
+						{
+							Port = Convert.ToInt32(value);
+						}
+						catch (Exception)
+						{
+							Debug.LogError("Failed to parse logport argument.");
+						}
+						break;
+				}
+			}
+		}
 	}
 
 	void Update()
@@ -142,7 +174,7 @@ public class LoginForm : MonoBehaviour
 		}
 
 		State = LoginState.Connecting;
-		Connection.Client.ConnectAsync("127.0.0.1", 11000);
+		Connection.Client.ConnectAsync(Host, Port);
 
 		Elements.SetActive(false);
 	}
