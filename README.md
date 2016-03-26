@@ -32,6 +32,10 @@ Requirements/Installation
 To compile Aurora, you need the latest version of [Unity](http://unity3d.com/).
 Download this repository, load it into Unity, and build it. Done!
 
+By default, the client tries to connect to the login server at
+`127.0.0.1:11000`, if you want it to connect to somewhere else,
+use the `logip` and `logport` arguments, just like the official client.
+
 Contribution
 ------------------------------
 Feel free to submit pull requests if you'd like to help extending
