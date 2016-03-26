@@ -156,7 +156,7 @@ GameObject:
   - 4: {fileID: 234270208}
   - 218: {fileID: 234270207}
   - 154: {fileID: 234270206}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,27 +257,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22449746, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493584, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493584, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493584, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493584, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493584, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 514
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7dbe968bb0778104f851e6e57c7c54bb, type: 2}

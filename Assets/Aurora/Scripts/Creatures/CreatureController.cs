@@ -19,6 +19,7 @@ public class CreatureController : MonoBehaviour
 	private Quaternion rotateTo;
 	private Animator animator;
 	private bool walking;
+	private LayerMask layerMask;
 
 	void Start()
 	{
@@ -26,6 +27,7 @@ public class CreatureController : MonoBehaviour
 		destination = myTransform.position;
 		rotateTo = myTransform.rotation;
 		animator = GetComponentInChildren<Animator>();
+		layerMask = LayerMask.GetMask("Ground");
 	}
 
 	void Update()
@@ -44,7 +46,7 @@ public class CreatureController : MonoBehaviour
 
 		// Gravitate towards floor
 		RaycastHit hit;
-		if (Physics.Raycast(pos + Vector3.up * 1000, Vector3.down, out hit))
+		if (Physics.Raycast(pos + Vector3.up * 1000, Vector3.down, out hit, 2000, layerMask))
 			pos.y = hit.point.y;
 
 		// Rotate
