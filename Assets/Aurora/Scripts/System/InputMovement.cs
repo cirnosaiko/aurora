@@ -49,14 +49,22 @@ public class InputMovement : MonoBehaviour
 				//controller.Move(hit.point, shift);
 
 				var x = (int)(hit.point.x * 100);
-				var y = (int)(hit.point.z * 100);
+				var z = (int)(hit.point.z * 100);
 
-				var packet = new Packet(shift ? Op.Walk : Op.Run, Connection.ControllingEntityId);
-				packet.PutInt(x);
-				packet.PutInt(y);
-				packet.PutByte(1);
-				packet.PutByte(0);
-				Connection.Client.Send(packet);
+				if (Connection.Client.State == ConnectionState.Connected)
+				{
+					var packet = new Packet(shift ? Op.Walk : Op.Run, Connection.ControllingEntityId);
+					packet.PutInt(x);
+					packet.PutInt(z);
+					packet.PutByte(1);
+					packet.PutByte(0);
+					Connection.Client.Send(packet);
+				}
+				else
+				{
+					// Offline test
+					target.GetComponent<CreatureController>().Move(new Vector3(x / 100f, 0, z / 100f), shift);
+				}
 
 				moveDelayTimeout = MoveDelay;
 			}
