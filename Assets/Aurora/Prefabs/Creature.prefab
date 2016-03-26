@@ -1857,6 +1857,7 @@ GameObject:
   - 4: {fileID: 426680}
   - 114: {fileID: 11434928}
   - 114: {fileID: 11442366}
+  - 65: {fileID: 6534154}
   m_Layer: 0
   m_Name: Creature
   m_TagString: Player
@@ -2571,7 +2572,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 175326}
-  m_LocalRotation: {x: 0.6420738, y: 0.30542335, z: -0.6339925, w: -0.30415705}
+  m_LocalRotation: {x: 0.64207375, y: 0.30542332, z: -0.63399243, w: -0.30415702}
   m_LocalPosition: {x: -0.080588885, y: -0.033353455, z: 0.116393134}
   m_LocalScale: {x: 0.99999976, y: 0.99999976, z: 0.9999998}
   m_Children:
@@ -2966,7 +2967,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.94, y: 14.74, z: 40}
+  m_LocalPosition: {x: 254.98405, y: 37.80382, z: 261.00323}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 499980}
@@ -3198,7 +3199,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146078}
-  m_LocalRotation: {x: 0.64207387, y: -0.30542296, z: -0.6339928, w: 0.3041566}
+  m_LocalRotation: {x: 0.6420738, y: -0.30542293, z: -0.63399273, w: 0.30415657}
   m_LocalPosition: {x: -0.08058888, y: 0.033353485, z: 0.11639312}
   m_LocalScale: {x: 1.0000002, y: 0.9999999, z: 1.0000002}
   m_Children:
@@ -4568,6 +4569,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 426680}
   m_RootOrder: 0
+--- !u!65 &6534154
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 2, z: 0.5}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!95 &9524374
 Animator:
   serializedVersion: 3
@@ -4612,6 +4625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 123456789
   Name: Foobar
+  IsConversationNpc: 0
 --- !u!137 &13755714
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
