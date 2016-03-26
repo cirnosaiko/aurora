@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Aura development team - Licensed under GNU GPL
 // For more information, see license file in the main folder
 
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,12 +24,7 @@ public class Taskbar : MonoBehaviour
 		if (endGameMsg != null && endGameMsg.Result != MsgBoxResult.Pending)
 		{
 			if (endGameMsg.Result == MsgBoxResult.Yes)
-			{
-				if (!Application.isEditor)
-					Application.Quit();
-				else
-					EditorApplication.isPlaying = false;
-			}
+				Application.Quit();
 
 			endGameMsg = null;
 		}
