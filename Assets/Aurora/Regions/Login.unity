@@ -1103,6 +1103,7 @@ GameObject:
   - 114: {fileID: 1396482402}
   - 114: {fileID: 1396482404}
   - 114: {fileID: 1396482406}
+  - 114: {fileID: 1396482407}
   m_Layer: 0
   m_Name: System
   m_TagString: Untagged
@@ -1170,6 +1171,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinLoadingTime: 0
+--- !u!114 &1396482407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1396482401}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70718826d7fa8af4f91e32cb2c6f5eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  Normal: {fileID: 2800000, guid: aa4076ada57bfb647bf7608e8794bd1c, type: 3}
+  Talk: {fileID: 2800000, guid: aa39f22597f9ca64198c172576c3853e, type: 3}
 --- !u!1 &1622613094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,6 +1257,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1970,4 +1988,6 @@ MonoBehaviour:
   TxtPassword: {fileID: 1679246405}
   BtnLogin: {fileID: 524358631}
   BtnEnd: {fileID: 977774181}
+  Host: 127.0.0.1
+  Port: 11000
   State: 0
