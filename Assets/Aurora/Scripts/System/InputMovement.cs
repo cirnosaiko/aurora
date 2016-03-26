@@ -13,11 +13,14 @@ public class InputMovement : MonoBehaviour
 
 	private GameObject target;
 	private float moveDelayTimeout = 0;
+	private LayerMask layerMask;
 
 	void Start()
 	{
 		var player = GameObject.FindGameObjectWithTag("Player");
 		SetTarget(player);
+
+		layerMask = LayerMask.GetMask("Ground");
 	}
 
 	void OnLevelWasLoaded(int level)
@@ -42,11 +45,9 @@ public class InputMovement : MonoBehaviour
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit))
+			if (Physics.Raycast(ray, out hit, 2000, layerMask))
 			{
 				var shift = Input.GetKey(KeyCode.LeftShift);
-				//var controller = target.GetComponent<CreatureController>();
-				//controller.Move(hit.point, shift);
 
 				var x = (int)(hit.point.x * 100);
 				var z = (int)(hit.point.z * 100);
