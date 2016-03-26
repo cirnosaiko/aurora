@@ -11,7 +11,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: Aura Project
   productName: Aurora
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: aa4076ada57bfb647bf7608e8794bd1c, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_ShowUnitySplashScreen: 1
   m_VirtualRealitySplashScreen: {fileID: 0}
