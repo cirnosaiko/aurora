@@ -416,6 +416,7 @@ public class PacketHandler : MonoBehaviour
 
 				var creatureObj = GameObject.Instantiate(DummyCreature);
 				creatureObj.name = string.Format("{0} ({1:X16})", creature.Name, creature.EntityId);
+				creatureObj.layer = 8; // Entities
 
 				creature.Transform = creatureObj.transform;
 				creature.Transform.position = new Vector3(creature.X / 100f, 0, creature.Z / 100f);

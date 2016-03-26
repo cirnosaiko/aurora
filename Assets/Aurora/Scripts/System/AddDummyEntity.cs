@@ -18,6 +18,7 @@ public class AddDummyEntity : MonoBehaviour
 
 			var obj = (GameObject)GameObject.Instantiate(Dummy, new Vector3(x, 0, z), Quaternion.identity);
 			obj.transform.SetParent(parentObj.transform);
+			obj.layer = 8; // Entities
 		}
 	}
 }
