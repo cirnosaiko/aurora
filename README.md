@@ -27,6 +27,10 @@ Since Aura has to be kept up-to-date for compatibility with the NA client,
 Aurora will be updated alongside it and will only ever support the latest
 version of Aura.
 
+**Note (2016-07-03)**<br/>
+Aurora hasn't been updated in a while and might currently
+not be compatible with Aura.
+
 Requirements/Installation
 ------------------------------
 To compile Aurora, you need the latest version of [Unity](http://unity3d.com/).
