@@ -209,6 +209,7 @@ public class PacketHandler : MonoBehaviour
 		var unkByte8 = packet.GetByte();
 		var pcCafe = packet.GetByte();
 		var freeBeginnerService = packet.GetByte();
+		var unkByte = packet.GetByte();
 
 		var characters = new List<CharacterInfo>();
 		var characterCount = packet.GetShort();
