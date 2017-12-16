@@ -1,6 +1,8 @@
 Aurora
 ==============================
 
+Aura项目
+
 A basic client for [Aura](https://github.com/aura-project/aura),
 developed for fun and experimentation, and as an example for the community.
 It should *not* be considered a replacement, at least not yet.
